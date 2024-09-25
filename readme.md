@@ -59,3 +59,12 @@ hurtbox
 - hitDisable（hitbox只会攻击一次），禁用hitbox的collisionShape，场景：冰球击中敌人后破碎  
 
 layer&mask：layer是当前物体所处层，mask是要对指定层进行扫描。假设player层要对enemy层进行被进入判断，只需要将player的mask的添加enemy层，enemy的layer指定为enemy，无需再进行额外操作
+
+## lesson 5
+SpawnInfo(Resource)
+> 脚本形式的资源文件，是数据的集合
+![Alt text](image-2.png)  
+
+EnemySpawner
+- timer，内置计数器，计数器触发敌人生成
+- 每次计数器触发，遍历spawner_info_array。如果time处于spawn_info的time_start与time_end时间段内，每隔spawn_enemy_delay就随机位置生成enemy_num个数的enemy_scene类型的敌人
