@@ -28,9 +28,18 @@ player动画
 player相机  
 - player添加camera2D节点  
 - player设置分组
+- 添加collisionShape  
 
 enemy
+- 添加collisionShape
 - 在onready通过分组获取player节点 
-- 运动跟随  
+- 运动跟随，global_position是相对与根节点树的全局位置
 
 ![Alt text](image-1.png)
+
+## lesson 3
+player idle动画改为一帧，新加walk动画，两帧 
+- 判断mov length，设置idle/walk
+- 判断x_mov,设置flip_h设置动画反转
+
+enemy类似

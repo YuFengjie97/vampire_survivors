@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://difvrsi7vfbo4"]
+[gd_scene load_steps=8 format=3 uid="uid://difvrsi7vfbo4"]
 
 [ext_resource type="Texture2D" uid="uid://dodh7lpff2p1b" path="res://Textures/Player/player_sprite.png" id="1_gfw0c"]
 [ext_resource type="Script" path="res://Player/player.gd" id="1_wh276"]
@@ -7,7 +7,11 @@
 atlas = ExtResource("1_gfw0c")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_v3p4v"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ggab"]
+atlas = ExtResource("1_gfw0c")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0md3m"]
 atlas = ExtResource("1_gfw0c")
 region = Rect2(32, 0, 32, 32)
 
@@ -16,12 +20,20 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_krgl3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_v3p4v")
 }],
 "loop": true,
 "name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ggab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0md3m")
+}],
+"loop": true,
+"name": &"walk",
 "speed": 5.0
 }]
 
@@ -38,7 +50,6 @@ texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_ff10p")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.932387
 
 [node name="Camera2D" type="Camera2D" parent="."]
 

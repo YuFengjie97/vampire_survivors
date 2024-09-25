@@ -18,6 +18,14 @@ func _input(_event):
 	mov.x = x_mov
 	mov.y = y_mov
 	mov = mov.normalized()
+	if mov.length() > 0:
+		animated_sprite_2d.play('walk')
+	else:
+		animated_sprite_2d.play('idle')
+	if x_mov > 0:
+		animated_sprite_2d.flip_h = true
+	if x_mov < 0:
+		animated_sprite_2d.flip_h = false
 
 func _physics_process(delta: float) -> void:
 	velocity = mov * move_speed * delta
