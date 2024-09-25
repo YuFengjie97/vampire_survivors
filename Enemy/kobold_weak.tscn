@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://ceev5jwib2d86"]
+
+[ext_resource type="Texture2D" uid="uid://twh4ef72ss1j" path="res://Textures/Enemy/kolbold_weak.png" id="1_eei70"]
+[ext_resource type="Script" path="res://Enemy/kobold_weak.gd" id="1_qihu0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ojjv7"]
+atlas = ExtResource("1_eei70")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1g21"]
+atlas = ExtResource("1_eei70")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fwjc0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ojjv7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1g21")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wmm44"]
+radius = 7.0
+height = 22.0
+
+[node name="KoboldWeak" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_qihu0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_fwjc0")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.260396
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 4)
+shape = SubResource("CapsuleShape2D_wmm44")

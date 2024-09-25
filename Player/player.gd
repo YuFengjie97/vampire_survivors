@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Player
 
 var move_speed = 2000
 var mov = Vector2(0, 0)

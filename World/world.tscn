@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bf7qqawqk6j13"]
+[gd_scene load_steps=4 format=3 uid="uid://bf7qqawqk6j13"]
 
 [ext_resource type="Texture2D" uid="uid://rlrxyxftcvx0" path="res://Textures/dirt_full_new.png" id="1_kjaqr"]
 [ext_resource type="PackedScene" uid="uid://difvrsi7vfbo4" path="res://Player/player.tscn" id="2_l4bi8"]
+[ext_resource type="PackedScene" uid="uid://ceev5jwib2d86" path="res://Enemy/kobold_weak.tscn" id="3_p5g3q"]
 
 [node name="World" type="Node2D"]
 
@@ -12,3 +13,6 @@ region_enabled = true
 region_rect = Rect2(0, 0, 4000, 4000)
 
 [node name="Player" parent="." instance=ExtResource("2_l4bi8")]
+
+[node name="KoboldWeak" parent="." instance=ExtResource("3_p5g3q")]
+position = Vector2(204, -24)
