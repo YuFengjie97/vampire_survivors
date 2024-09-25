@@ -3,6 +3,7 @@ class_name Player
 
 var move_speed = 2000
 var mov = Vector2(0, 0)
+var health = 100
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -30,3 +31,10 @@ func _input(_event):
 func _physics_process(delta: float) -> void:
 	velocity = mov * move_speed * delta
 	move_and_slide()
+
+
+func _on_hurt_box_hurt(damage: Variant) -> void:
+	health -= damage
+	print(health)
+	if health <= 0:
+		print('player death')

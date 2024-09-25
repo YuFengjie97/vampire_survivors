@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://ceev5jwib2d86"]
+[gd_scene load_steps=11 format=3 uid="uid://ceev5jwib2d86"]
 
 [ext_resource type="Texture2D" uid="uid://twh4ef72ss1j" path="res://Textures/Enemy/kolbold_weak.png" id="1_eei70"]
 [ext_resource type="Script" path="res://Enemy/kobold_weak.gd" id="1_qihu0"]
+[ext_resource type="PackedScene" uid="uid://xastusmttec0" path="res://HitBox/hit_box.tscn" id="3_e0aj1"]
+[ext_resource type="PackedScene" uid="uid://dcypky4610txx" path="res://HurtBox/hurt_box.tscn" id="4_iok15"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ojjv7"]
 atlas = ExtResource("1_eei70")
@@ -29,6 +31,12 @@ animations = [{
 radius = 7.0
 height = 22.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vjgtt"]
+size = Vector2(24, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oge1v"]
+size = Vector2(20, 28)
+
 [node name="KoboldWeak" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_qihu0")
@@ -38,8 +46,29 @@ texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_fwjc0")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.0784448
+frame_progress = 0.698176
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, 4)
 shape = SubResource("CapsuleShape2D_wmm44")
+
+[node name="HitBox" parent="." instance=ExtResource("3_e0aj1")]
+collision_layer = 4
+
+[node name="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2(1, 2)
+shape = SubResource("RectangleShape2D_vjgtt")
+debug_color = Color(0.870382, 0.105639, 0.527846, 0.42)
+
+[node name="HurtBox" parent="." instance=ExtResource("4_iok15")]
+collision_layer = 4
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_oge1v")
+debug_color = Color(0.193756, 0.619515, 0.479793, 0.42)
+
+[connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+
+[editable path="HitBox"]
+[editable path="HurtBox"]

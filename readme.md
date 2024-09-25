@@ -43,3 +43,19 @@ player idle动画改为一帧，新加walk动画，两帧
 - 判断x_mov,设置flip_h设置动画反转
 
 enemy类似
+
+## lesson 4
+hitbox
+> 攻击判定  
+- collisionShape，hitbox进入hurtbox
+- timer，（冷却用来重置）
+
+hurtbox
+> 受伤判定  
+- collisionShape，hurtbox被hitbox进入
+- timer
+- cooldown（冷却），被连续攻击时，通过timer来禁用collisionShape，场景：处于火焰中。关于area_entered，只会触发一次，因为通过cooldown的timer来回禁用collisionShape，变成可以重复触发
+- hitOnce（只会被攻击一次），场景：冰锥穿过多个敌人
+- hitDisable（hitbox只会攻击一次），禁用hitbox的collisionShape，场景：冰球击中敌人后破碎  
+
+layer&mask：layer是当前物体所处层，mask是要对指定层进行扫描。假设player层要对enemy层进行被进入判断，只需要将player的mask的添加enemy层，enemy的layer指定为enemy，无需再进行额外操作
