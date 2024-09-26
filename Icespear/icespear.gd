@@ -10,7 +10,6 @@ var attack_size = 1.0
 var target = Vector2.ZERO
 var direction = Vector2.ZERO
 
-@onready var audio_create: AudioStreamPlayer2D = $AudioCreate
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
 func _ready() -> void:
@@ -22,7 +21,7 @@ func _ready() -> void:
 			attack_size = 1.0
 	direction = global_position.direction_to(target).normalized()
 	rotation = direction.angle() + deg_to_rad(135)
-	audio_create.play()
+	AudioBus.play("res://Audio/SoundEffect/ice.wav", 4)
 	var tween = create_tween()
 	tween.tween_property(sprite_2d, 'scale', Vector2(1., 1.) * attack_size, 1.).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 

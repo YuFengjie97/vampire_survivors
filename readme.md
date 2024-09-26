@@ -102,3 +102,9 @@ DectectZone对进入该范围的Enemy进行捕获，注意其mask要添加enemy�
 
 在hurtBox中对进入的area进行对武器hp的削减
 武器节点添加分组hit
+
+## lesson 6.1
+> AudioBus,音频总线，全局单例  
+
+冰矛在创建添加到树（触发ready），播放音频，如果这是过快被销毁，使用queue_free销毁整个冰矛，会一同销毁掉冰矛下的音频节点，所以创建音频总线管理
+[音频总线参考](https://kidscancode.org/godot_recipes/4.x/audio/audio_manager/index.html)
