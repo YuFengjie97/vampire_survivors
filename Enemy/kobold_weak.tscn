@@ -37,7 +37,9 @@ size = Vector2(24, 28)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oge1v"]
 size = Vector2(20, 28)
 
-[node name="KoboldWeak" type="CharacterBody2D"]
+[node name="KoboldWeak" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 4
+collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_qihu0")
 
@@ -62,6 +64,7 @@ debug_color = Color(0.870382, 0.105639, 0.527846, 0.42)
 
 [node name="HurtBox" parent="." instance=ExtResource("4_iok15")]
 collision_layer = 4
+collision_mask = 16
 
 [node name="CollisionShape2D" parent="HurtBox" index="0"]
 position = Vector2(2, 2)

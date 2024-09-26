@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Enemy
 
 @export var move_speed = 1500
 var health = 10

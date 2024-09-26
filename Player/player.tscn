@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://difvrsi7vfbo4"]
+[gd_scene load_steps=11 format=3 uid="uid://difvrsi7vfbo4"]
 
 [ext_resource type="Texture2D" uid="uid://dodh7lpff2p1b" path="res://Textures/Player/player_sprite.png" id="1_gfw0c"]
 [ext_resource type="Script" path="res://Player/player.gd" id="1_wh276"]
@@ -42,6 +42,9 @@ animations = [{
 radius = 8.0
 height = 26.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_hr4bn"]
+radius = 177.229
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_doa41"]
 size = Vector2(18, 28)
 
@@ -61,6 +64,13 @@ autoplay = "idle"
 position = Vector2(1, 2)
 shape = SubResource("CapsuleShape2D_8djaa")
 
+[node name="DetectZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectZone"]
+shape = SubResource("CircleShape2D_hr4bn")
+
 [node name="HurtBox" parent="." instance=ExtResource("3_e4jx7")]
 collision_layer = 2
 collision_mask = 4
@@ -70,6 +80,20 @@ position = Vector2(1, 2)
 shape = SubResource("RectangleShape2D_doa41")
 debug_color = Color(0.0812251, 0.639149, 0.333658, 0.42)
 
+[node name="WeaponManager" type="Node2D" parent="."]
+
+[node name="IcespearAttackTimer" type="Timer" parent="WeaponManager"]
+wait_time = 0.1
+one_shot = true
+
+[node name="IcespearReloadTimer" type="Timer" parent="WeaponManager"]
+wait_time = 1.5
+one_shot = true
+
+[connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]
+[connection signal="body_exited" from="DetectZone" to="." method="_on_detect_zone_body_exited"]
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+[connection signal="timeout" from="WeaponManager/IcespearAttackTimer" to="." method="_on_icespear_attack_timer_timeout"]
+[connection signal="timeout" from="WeaponManager/IcespearReloadTimer" to="." method="_on_icespear_reload_timer_timeout"]
 
 [editable path="HurtBox"]
