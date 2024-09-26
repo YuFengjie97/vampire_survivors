@@ -1,10 +1,176 @@
-[gd_scene load_steps=4 format=3 uid="uid://cwjeje7yttqma"]
+[gd_scene load_steps=19 format=3 uid="uid://cwjeje7yttqma"]
 
-[ext_resource type="Texture2D" uid="uid://b7cvdywemeq0q" path="res://Textures/Items/Weapons/ice_spear.png" id="1_6g3jc"]
 [ext_resource type="Script" path="res://Icespear/icespear.gd" id="1_bkimw"]
+[ext_resource type="Texture2D" uid="uid://o1l0qerowko3" path="res://Textures/Items/Weapons/ice_spear_02.png" id="2_ebmgm"]
+[ext_resource type="Texture2D" uid="uid://csskwuryd8wtb" path="res://Textures/Items/Weapons/ice_spear_crush.png" id="3_8lfl3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_haqhb"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20400"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xmv53"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3nvw"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(144, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx4x8"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(192, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c07ew"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(240, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hvqhm"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(288, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ngyb7"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(336, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_375ej"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(384, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hovjx"]
+atlas = ExtResource("2_ebmgm")
+region = Rect2(432, 0, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e8vdw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_haqhb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20400")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xmv53")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w3nvw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx4x8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c07ew")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hvqhm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ngyb7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_375ej")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hovjx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i8wgw"]
-size = Vector2(33.234, 6.36396)
+size = Vector2(27.617, 9)
+
+[sub_resource type="Animation" id="Animation_55kjg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CrushSprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_t4xd4"]
+resource_name = "crush"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CrushSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CrushSprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedSprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2r84h"]
+_data = {
+"RESET": SubResource("Animation_55kjg"),
+"crush": SubResource("Animation_t4xd4")
+}
 
 [node name="IceSpear" type="Area2D" groups=["hit"]]
 z_index = 1
@@ -12,16 +178,29 @@ collision_layer = 16
 collision_mask = 0
 script = ExtResource("1_bkimw")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("1_6g3jc")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 10
+sprite_frames = SubResource("SpriteFrames_e8vdw")
+autoplay = "default"
+frame_progress = 0.363868
+
+[node name="CrushSprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_8lfl3")
+hframes = 8
+region_rect = Rect2(11, 3, 29, 24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, -0.5)
-rotation = 0.785398
+position = Vector2(-1.8085, 0.5)
 shape = SubResource("RectangleShape2D_i8wgw")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-3.5, 0.5)
+scale = Vector2(1.85, 0.95)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2r84h")
+}
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

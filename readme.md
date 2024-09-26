@@ -108,3 +108,11 @@ DectectZone对进入该范围的Enemy进行捕获，注意其mask要添加enemy�
 
 冰矛在创建添加到树（触发ready），播放音频，如果这是过快被销毁，使用queue_free销毁整个冰矛，会一同销毁掉冰矛下的音频节点，所以创建音频总线管理
 [音频总线参考](https://kidscancode.org/godot_recipes/4.x/audio/audio_manager/index.html)
+
+## lesson 6.2
+> 新的冰矛动画，[new icespear asserts](https://pimen.itch.io/ice-spell-effect-01)
+
+![Alt text](image-10.png)
+- 删除原来sprite2d，新增animateSprite2d。自动播放，循环播放
+- 新增curshSprite2d是Sprite2d。通过animationPlayer关键帧控制动画
+- 动画结尾关键帧处理销毁
