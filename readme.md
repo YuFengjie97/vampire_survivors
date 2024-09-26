@@ -1,10 +1,13 @@
 # Vampire Survivors tutorial follow
 
+> 吸血鬼幸存者，[游戏教程](https://www.bilibili.com/video/BV1ok4y1c7yA)，自己加了点私货
+
 ## Godot Version
 4.3
 
+
 ## lesson 0
-[asserts](https://github.com/brannotaylor/SurvivorsClone_Base)
+[assets](https://github.com/brannotaylor/SurvivorsClone_Base)
 
 ## lesson 1
 > 背景与player的移动
@@ -110,7 +113,7 @@ DectectZone对进入该范围的Enemy进行捕获，注意其mask要添加enemy�
 [音频总线参考](https://kidscancode.org/godot_recipes/4.x/audio/audio_manager/index.html)
 
 ## lesson 6.2
-> 新的冰矛动画，[new icespear asserts](https://pimen.itch.io/ice-spell-effect-01)
+> 新的冰矛动画，[new icespear assets](https://pimen.itch.io/ice-spell-effect-01)
 
 ![Alt text](image-10.png)
 - 删除原来sprite2d，新增animateSprite2d。自动播放，循环播放
