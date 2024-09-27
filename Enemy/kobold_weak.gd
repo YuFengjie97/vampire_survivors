@@ -3,7 +3,6 @@ extends Enemy
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var player = get_tree().get_first_node_in_group('player') as Player
 #@onready var player = get_node('/root/World/Player') as Player
-#@onready var player = get_node('/root/World').get_node('%Player') as Player #唯一节点限制当前场景
 
 @onready var audio_hit: AudioStreamPlayer2D = $AudioHit
 

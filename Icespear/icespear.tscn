@@ -173,6 +173,7 @@ _data = {
 }
 
 [node name="IceSpear" type="Area2D" groups=["hit"]]
+top_level = true
 z_index = 1
 collision_layer = 16
 collision_mask = 0

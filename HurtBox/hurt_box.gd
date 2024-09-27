@@ -20,7 +20,8 @@ func _on_area_entered(area: Area2D) -> void:
 				timer.start()
 			HurtBoxType.HITONCE:
 				if not hit_once_array.has(area):
-					area.remove.connect(remove_from_hit_once_array)
+					if not area.remove.is_connected(remove_from_hit_once_array):
+						area.remove.connect(remove_from_hit_once_array)
 					hit_once_array.append(area)
 			HurtBoxType.HITDISABLE:
 				if area.has_method('temp_disabled'):

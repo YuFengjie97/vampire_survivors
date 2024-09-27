@@ -143,3 +143,67 @@ hitonce
 
 ## lesson 8
 > 龙卷风，之字运动
+
+- 主要属性和生成与冰矛类似，不同点在于运动轨迹
+
+之字运动
+- 与教程不同，使用向量和angle去处理（自己写的，已经准备申请专利了）
+- 记录player的lastmove，用来指定龙卷风方向（direction）
+- direction向量使用angle()获取向量角度
+- 设定随机角度范围，定义运动角度，使用tween来线性变化运动角度
+- 在physics_process中将运动角度转为向量（Vector2.from_angle()）
+- 有运动方向后，就是完成之字运动了
+
+PS:  
+
+其他场景获取节点
+- `@onready var player = get_node('/root/World/Player') as Player`依赖路径，但是方便
+- `@onready var player = get_tree().get_first_node_in_group('player') as Player`利用分组，无视路径，但是需要额外设置分组
+- `%`限制同场景
+- 全局单例
+- `Node.find_child()`全局搜索，可以无视路径，可以查找嵌套节点，废性能
+
+关于绘制层与position
+- 在player节点下生成weapon，更改weapon位置，weapon会相当于player运动，而不是world。启用Visiblity-Top Level，会在不是top level的层上绘制。用来脱离player。但是这样直接修改position（相对于父节点）会丢失父节点。所以在weapon生成时，需要指定position。但是教程中没有看到重新设置，有待考证
+
+之字运动详解
+
+```
+var direction = Vector2.RIGHT
+var direction_angle = 0
+var angle_half_range_min = 10
+var angle_half_range_max = 45
+```
+direction 即为player的lastmove
+direction_angle 方向向量的角度
+angle_range tween随机变化角度范围
+
+```
+func get_random_angle(is_less: bool) -> float:
+	var angle_inc = deg_to_rad(randf_range(angle_half_range_min, angle_half_range_max))
+	return (direction_angle - angle_inc) if is_less else (direction_angle + angle_inc)
+
+```
+获取随机角度
+
+```
+func random_tween():
+	var type = randi_range(0, 1) == 0
+	var tween = create_tween()
+	var duration = 1.2
+	tween.tween_property(self, 'direction_angle', get_random_angle(type), duration)
+	tween.tween_property(self, 'direction_angle', get_random_angle(!type), duration)
+	tween.tween_property(self, 'direction_angle', get_random_angle(type), duration)
+	tween.tween_property(self, 'direction_angle', get_random_angle(!type), duration)
+	tween.tween_property(self, 'direction_angle', get_random_angle(type), duration)
+	tween.tween_property(self, 'direction_angle', get_random_angle(!type), duration)
+
+```
+在ready中调用，tween在不停变化方向角度
+
+```
+func _physics_process(delta: float) -> void:
+	var direction_mov = Vector2.from_angle(direction_angle)
+	position += direction_mov * speed * delta
+```
+在物理运动中根据方向角度去修改位置

@@ -3,6 +3,7 @@ class_name IceSpear
 
 signal remove(area)
 
+@onready var player = get_node('/root/World/Player') as Player
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var crush_sprite_2d: Sprite2D = $CrushSprite2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
@@ -18,11 +19,12 @@ var target = Vector2.ZERO
 var direction = Vector2.ZERO # 朝向target的单位向量
 
 func _ready() -> void:
+	position = player.position
 	match level:
 		1:
 			hp = 2
 			damage = 5
-			speed = 200
+			speed = 100
 			attack_size = 1.0
 	direction = global_position.direction_to(target)
 	rotation = direction.angle()

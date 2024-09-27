@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://difvrsi7vfbo4"]
+[gd_scene load_steps=13 format=3 uid="uid://difvrsi7vfbo4"]
 
 [ext_resource type="Texture2D" uid="uid://dodh7lpff2p1b" path="res://Textures/Player/player_sprite.png" id="1_gfw0c"]
 [ext_resource type="Script" path="res://Player/player.gd" id="1_wh276"]
 [ext_resource type="PackedScene" uid="uid://dcypky4610txx" path="res://HurtBox/hurt_box.tscn" id="3_e4jx7"]
 [ext_resource type="Script" path="res://Player/icespear_manager.gd" id="4_j6xhs"]
+[ext_resource type="Script" path="res://Player/tornado_manager.gd" id="5_fa30r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_krgl3"]
 atlas = ExtResource("1_gfw0c")
@@ -87,18 +88,27 @@ debug_color = Color(0.0812251, 0.639149, 0.333658, 0.42)
 [node name="IcespearManager" type="Node2D" parent="WeaponManager"]
 script = ExtResource("4_j6xhs")
 
-[node name="IcespearAttackTimer" type="Timer" parent="WeaponManager/IcespearManager"]
-wait_time = 0.1
+[node name="AttackTimer" type="Timer" parent="WeaponManager/IcespearManager"]
 one_shot = true
 
-[node name="IcespearReloadTimer" type="Timer" parent="WeaponManager/IcespearManager"]
-wait_time = 1.5
+[node name="ReloadTimer" type="Timer" parent="WeaponManager/IcespearManager"]
+one_shot = true
+
+[node name="TornadoManager" type="Node2D" parent="WeaponManager"]
+script = ExtResource("5_fa30r")
+
+[node name="AttackTimer" type="Timer" parent="WeaponManager/TornadoManager"]
+one_shot = true
+
+[node name="ReloadTimer" type="Timer" parent="WeaponManager/TornadoManager"]
 one_shot = true
 
 [connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]
 [connection signal="body_exited" from="DetectZone" to="." method="_on_detect_zone_body_exited"]
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
-[connection signal="timeout" from="WeaponManager/IcespearManager/IcespearAttackTimer" to="WeaponManager/IcespearManager" method="_on_icespear_attack_timer_timeout"]
-[connection signal="timeout" from="WeaponManager/IcespearManager/IcespearReloadTimer" to="WeaponManager/IcespearManager" method="_on_icespear_reload_timer_timeout"]
+[connection signal="timeout" from="WeaponManager/IcespearManager/AttackTimer" to="WeaponManager/IcespearManager" method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="WeaponManager/IcespearManager/ReloadTimer" to="WeaponManager/IcespearManager" method="_on_reload_timer_timeout"]
+[connection signal="timeout" from="WeaponManager/TornadoManager/AttackTimer" to="WeaponManager/TornadoManager" method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="WeaponManager/TornadoManager/ReloadTimer" to="WeaponManager/TornadoManager" method="_on_reload_timer_timeout"]
 
 [editable path="HurtBox"]

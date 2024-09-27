@@ -1,5 +1,5 @@
 extends Node2D
-class_name IcespearManager
+class_name TornadoManager
 
 
 @onready var attack_timer: Timer = $AttackTimer
@@ -9,10 +9,10 @@ class_name IcespearManager
 
 var level = 1
 var ammo = 0
-var baseammo = 3
-var attack_delay = 0.2
-var reload_delay = 2.0
-var scene = preload("res://Icespear/icespear.tscn")
+var baseammo = 1
+var attack_delay = 0.1
+var reload_delay = 1.0
+var scene = preload("res://Tornado/tornado.tscn")
 
 
 func _ready() -> void:
@@ -32,10 +32,8 @@ func _on_reload_timer_timeout() -> void:
 
 func _on_attack_timer_timeout() -> void:
 	if ammo > 0:
-		var target = player.get_random_enemy()
-		var icespear = scene.instantiate()
-		icespear.target = target
-		add_child(icespear)
+		var tornado = scene.instantiate() as Tornado
+		add_child(tornado)
 		ammo -= 1
 		attack_timer.start()
 	else:
