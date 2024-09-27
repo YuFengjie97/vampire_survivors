@@ -2,6 +2,9 @@ extends Enemy
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var player = get_tree().get_first_node_in_group('player') as Player
+#@onready var player = get_node('/root/World/Player') as Player
+#@onready var player = get_node('/root/World').get_node('%Player') as Player #唯一节点限制当前场景
+
 @onready var audio_hit: AudioStreamPlayer2D = $AudioHit
 
 @export var move_speed = 2500
@@ -10,6 +13,7 @@ var knockback = Vector2.ZERO
 var knockback_recory = 30
 
 var explosion_scene = preload("res://Explosion/explosion.tscn")
+
 
 func _physics_process(delta: float) -> void:
 	var direction = global_position.direction_to(player.global_position)

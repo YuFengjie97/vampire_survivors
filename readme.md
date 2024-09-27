@@ -140,3 +140,6 @@ hitonce
 死亡爆炸
 - 新增场景Expolision，敌人死亡时，通过get_parent()向父节点添加爆炸节点，并通过自身位置确定爆炸位置。这是因为敌人死亡，触发queue_free，如果爆炸添加到自身节点，会直接被删除，感官上什么也没有发生
 - 爆炸场景包括AnimateSprite2D，播放爆炸动画，通过信号animation_finished自我销毁
+
+## lesson 8
+> 龙卷风，之字运动

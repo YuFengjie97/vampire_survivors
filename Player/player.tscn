@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://difvrsi7vfbo4"]
+[gd_scene load_steps=12 format=3 uid="uid://difvrsi7vfbo4"]
 
 [ext_resource type="Texture2D" uid="uid://dodh7lpff2p1b" path="res://Textures/Player/player_sprite.png" id="1_gfw0c"]
 [ext_resource type="Script" path="res://Player/player.gd" id="1_wh276"]
 [ext_resource type="PackedScene" uid="uid://dcypky4610txx" path="res://HurtBox/hurt_box.tscn" id="3_e4jx7"]
+[ext_resource type="Script" path="res://Player/icespear_manager.gd" id="4_j6xhs"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_krgl3"]
 atlas = ExtResource("1_gfw0c")
@@ -54,7 +55,7 @@ collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_wh276")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["player"]]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_ff10p")
 animation = &"idle"
@@ -83,18 +84,21 @@ debug_color = Color(0.0812251, 0.639149, 0.333658, 0.42)
 
 [node name="WeaponManager" type="Node2D" parent="."]
 
-[node name="IcespearAttackTimer" type="Timer" parent="WeaponManager"]
+[node name="IcespearManager" type="Node2D" parent="WeaponManager"]
+script = ExtResource("4_j6xhs")
+
+[node name="IcespearAttackTimer" type="Timer" parent="WeaponManager/IcespearManager"]
 wait_time = 0.1
 one_shot = true
 
-[node name="IcespearReloadTimer" type="Timer" parent="WeaponManager"]
+[node name="IcespearReloadTimer" type="Timer" parent="WeaponManager/IcespearManager"]
 wait_time = 1.5
 one_shot = true
 
 [connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]
 [connection signal="body_exited" from="DetectZone" to="." method="_on_detect_zone_body_exited"]
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
-[connection signal="timeout" from="WeaponManager/IcespearAttackTimer" to="." method="_on_icespear_attack_timer_timeout"]
-[connection signal="timeout" from="WeaponManager/IcespearReloadTimer" to="." method="_on_icespear_reload_timer_timeout"]
+[connection signal="timeout" from="WeaponManager/IcespearManager/IcespearAttackTimer" to="WeaponManager/IcespearManager" method="_on_icespear_attack_timer_timeout"]
+[connection signal="timeout" from="WeaponManager/IcespearManager/IcespearReloadTimer" to="WeaponManager/IcespearManager" method="_on_icespear_reload_timer_timeout"]
 
 [editable path="HurtBox"]

@@ -23,6 +23,7 @@ region_enabled = true
 region_rect = Rect2(0, 0, 4000, 4000)
 
 [node name="Player" parent="." instance=ExtResource("2_l4bi8")]
+unique_name_in_owner = true
 
 [node name="EnemySpawner" parent="." instance=ExtResource("3_w6ady")]
 spawne_info_array = Array[ExtResource("4_wgrj1")]([SubResource("Resource_ofkhf")])
