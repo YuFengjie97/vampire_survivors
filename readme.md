@@ -119,3 +119,24 @@ DectectZone对进入该范围的Enemy进行捕获，注意其mask要添加enemy�
 - 删除原来sprite2d，新增animateSprite2d。自动播放，循环播放
 - 新增curshSprite2d是Sprite2d。通过animationPlayer关键帧控制动画
 - 动画结尾关键帧处理销毁
+
+## lesson 7
+> 击退效果，HitOnce，敌人被击中音效，敌人死亡爆炸场景
+
+击退
+- 武器属性direction提供击退方向，knockback_force提供击退力
+- 在enemy的hurtbox中area_enter捕获武器时获取direction，knockback_force
+- hurtbox的hurt信号额外添加这两个参数，以提供给enemy
+- enemy通过direction & knockback_force计算knockback
+- enemy运动，`knockback = knockback.move_toward(Vector2.ZERO, knockback_recory)`使其不断减小，并累加到velocity上。表现为敌人收到来自direction方向的攻击，位置以knockback增量向direction改变，knockback逐渐变小，enemy逐步恢复原来的运动（走向player）
+
+hitonce
+- 武器新增信号remove(area)，area为自身self，在自身hp为0 或 被销毁时触发信号
+- hurtbox中伤害类型hitonce逻辑补全，新增hit_once_array，用来记录当前enemy被首次击中时的武器。新增remove_from_hit_once_array(area)来对被销毁的武器进行删除。通过判断武器信号remove的is_connect是否连接到remove_from_hit_once_array，并通过connect进行连接。这样，当武器销毁时（hp为0，超出视口）自动删除hurtbox中的hit_once_array中的自己
+
+击中音效
+- enemy新增Audio节点，用来播放被击中时的音效
+
+死亡爆炸
+- 新增场景Expolision，敌人死亡时，通过get_parent()向父节点添加爆炸节点，并通过自身位置确定爆炸位置。这是因为敌人死亡，触发queue_free，如果爆炸添加到自身节点，会直接被删除，感官上什么也没有发生
+- 爆炸场景包括AnimateSprite2D，播放爆炸动画，通过信号animation_finished自我销毁

@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
-var move_speed = 2000
+var move_speed = 3000
 var mov = Vector2(0, 0)
 var health = 100
 
@@ -47,9 +47,8 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func _on_hurt_box_hurt(damage: Variant) -> void:
+func _on_hurt_box_hurt(damage: Variant, _direction, _knockback_force) -> void:
 	health -= damage
-	print(health)
 	if health <= 0:
 		print('player death')
 

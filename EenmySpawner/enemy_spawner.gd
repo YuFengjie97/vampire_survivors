@@ -10,7 +10,7 @@ var time = 0
 func _on_timer_timeout() -> void:
 	time += 1
 	for spawn_info in spawne_info_array:
-		if time > spawn_info.time_start and time < spawn_info.time_end:
+		if time >= spawn_info.time_start and time <= spawn_info.time_end:
 			if spawn_info.spawn_delay_counter < spawn_info.spawn_delay:
 				spawn_info.spawn_delay_counter += 1
 			else:

@@ -49,6 +49,8 @@ radius = 177.229
 size = Vector2(18, 28)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_wh276")
 
@@ -72,7 +74,6 @@ collision_mask = 4
 shape = SubResource("CircleShape2D_hr4bn")
 
 [node name="HurtBox" parent="." instance=ExtResource("3_e4jx7")]
-collision_layer = 2
 collision_mask = 4
 
 [node name="CollisionShape2D" parent="HurtBox" index="0"]
