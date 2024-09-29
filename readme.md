@@ -207,3 +207,6 @@ func _physics_process(delta: float) -> void:
 	position += direction_mov * speed * delta
 ```
 在物理运动中根据方向角度去修改位置
+
+## lesson 9
+> 标枪

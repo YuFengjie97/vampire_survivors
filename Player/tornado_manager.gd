@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 class_name TornadoManager
 
 
@@ -7,7 +7,7 @@ class_name TornadoManager
 @onready var player: Player = $"../.."
 
 
-var level = 1
+var level = 0
 var ammo = 0
 var baseammo = 1
 var attack_delay = 0.1
@@ -33,6 +33,7 @@ func _on_reload_timer_timeout() -> void:
 func _on_attack_timer_timeout() -> void:
 	if ammo > 0:
 		var tornado = scene.instantiate() as Tornado
+		tornado.level = level
 		add_child(tornado)
 		ammo -= 1
 		attack_timer.start()

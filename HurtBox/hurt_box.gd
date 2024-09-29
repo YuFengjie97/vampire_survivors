@@ -1,13 +1,14 @@
 extends Area2D
 class_name HurtBox
 
-signal hurt(damage, direction, knockback_force)
+signal hurt(hurt_box_owner, hit_obj)
 
 enum HurtBoxType { COOLDOWN, HITONCE, HITDISABLE }
 
 @export var current_type: HurtBoxType = HurtBoxType.COOLDOWN
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var timer: Timer = $Timer
+@onready var hurt_box_owner = owner
 
 var hit_once_array: Array[Area2D] = []
 
@@ -20,26 +21,22 @@ func _on_area_entered(area: Area2D) -> void:
 				timer.start()
 			HurtBoxType.HITONCE:
 				if not hit_once_array.has(area):
-					if not area.remove.is_connected(remove_from_hit_once_array):
-						area.remove.connect(remove_from_hit_once_array)
+					if area.has_signal('remove_from_hit_once') and not area.remove_from_hit_once.is_connected(remove_from_hit_once_array):
+						area.remove_from_hit_once.connect(remove_from_hit_once_array)
 					hit_once_array.append(area)
+				else:
+					return
 			HurtBoxType.HITDISABLE:
 				if area.has_method('temp_disabled'):
 					area.temp_disable()
+
 
 		# 武器击中敌人后，武器损伤
 		if area.has_method('enemy_hit'):
 			area.enemy_hit()
 		
 		# 武器击中敌人，敌人后退
-		var knockback_force = 0
-		var direction = Vector2.ZERO
-		if area.get('knockback_force') != null:
-			knockback_force = area.knockback_force
-		if area.get('direction') != null:
-			direction = area.direction
-		
-		hurt.emit(area.damage, direction, knockback_force)
+		hurt.emit(hurt_box_owner, area)
 
 
 func remove_from_hit_once_array(area):

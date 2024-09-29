@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://ceev5jwib2d86"]
+[gd_scene load_steps=11 format=3 uid="uid://ceev5jwib2d86"]
 
 [ext_resource type="Texture2D" uid="uid://twh4ef72ss1j" path="res://Textures/Enemy/kolbold_weak.png" id="1_eei70"]
 [ext_resource type="Script" path="res://Enemy/kobold_weak.gd" id="1_qihu0"]
 [ext_resource type="PackedScene" uid="uid://xastusmttec0" path="res://HitBox/hit_box.tscn" id="3_e0aj1"]
 [ext_resource type="PackedScene" uid="uid://dcypky4610txx" path="res://HurtBox/hurt_box.tscn" id="4_iok15"]
-[ext_resource type="AudioStream" uid="uid://ccf6kjwnjqijg" path="res://Audio/SoundEffect/enemy_hit.ogg" id="5_ohrjq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ojjv7"]
 atlas = ExtResource("1_eei70")
@@ -40,7 +39,7 @@ size = Vector2(20, 26)
 
 [node name="KoboldWeak" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 4
-collision_mask = 2
+collision_mask = 6
 motion_mode = 1
 script = ExtResource("1_qihu0")
 
@@ -73,12 +72,7 @@ position = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_oge1v")
 debug_color = Color(0.193756, 0.619515, 0.479793, 0.42)
 
-[node name="AudioHit" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_ohrjq")
-volume_db = -15.0
-
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
-[connection signal="finished" from="AudioHit" to="." method="_on_audio_hit_finished"]
 
 [editable path="HitBox"]
 [editable path="HurtBox"]

@@ -1,7 +1,7 @@
 extends Area2D
 class_name IceSpear
 
-signal remove(area)
+signal remove_from_hit_once(area)
 
 @onready var player = get_node('/root/World/Player') as Player
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -20,6 +20,11 @@ var direction = Vector2.ZERO # 朝向target的单位向量
 
 func _ready() -> void:
 	position = player.position
+	var random_enemy = player.get_random_enemy()
+	if random_enemy != null:
+		target = random_enemy.position
+	else:
+		target = Vector2.RIGHT
 	match level:
 		1:
 			hp = 2
@@ -41,10 +46,10 @@ func _physics_process(delta: float) -> void:
 func enemy_hit(charge = 1):
 	hp -= charge
 	if hp <= 0:
-		remove.emit(self)
+		remove_from_hit_once.emit(self)
 		animation_player.play('crush')
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	remove.emit(self)
+	remove_from_hit_once.emit(self)
 	queue_free()

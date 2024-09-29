@@ -9,10 +9,10 @@
 [sub_resource type="Resource" id="Resource_ofkhf"]
 script = ExtResource("4_wgrj1")
 time_start = 0
-time_end = 2
+time_end = 10
 enemy_scene = ExtResource("3_p5g3q")
-enemy_num = 5
-spawn_delay = 1
+enemy_num = 10
+spawn_delay = 2
 
 [node name="World" type="Node2D"]
 

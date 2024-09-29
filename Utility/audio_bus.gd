@@ -21,8 +21,8 @@ func _on_stream_finished(stream):
 	available.append(stream)
 
 
-func play(sound_path, pitch_scale = 1):
-	queue.append({ 'sound_path': sound_path, 'pitch_scale': pitch_scale })
+func play(sound_path, pitch_scale = 1, volume_db = 1):
+	queue.append({ 'sound_path': sound_path, 'pitch_scale': pitch_scale, 'volume_db': volume_db })
 
 
 func _process(_delta):
@@ -31,7 +31,9 @@ func _process(_delta):
 		var sound_info = queue.pop_front()
 		var sound_path = sound_info.sound_path
 		var pitch_scale = sound_info.pitch_scale
+		var volume_db = sound_info.volume_db
 		available[0].stream = load(sound_path)
 		available[0].pitch_scale = pitch_scale
+		available[0].volume_db = volume_db
 		available[0].play()
 		available.pop_front()

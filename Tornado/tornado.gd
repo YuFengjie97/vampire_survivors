@@ -1,7 +1,7 @@
 extends Area2D
 class_name Tornado
 
-signal remove(area2d)
+signal remove_from_hit_once(area2d)
 
 @onready var player = get_node('/root/World/Player') as Player
 
@@ -59,5 +59,5 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	remove.emit(self)
+	remove_from_hit_once.emit(self)
 	queue_free()

@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 class_name IcespearManager
 
 
@@ -7,9 +7,9 @@ class_name IcespearManager
 @onready var player: Player = $"../.."
 
 
-var level = 1
+var level = 0
 var ammo = 0
-var baseammo = 3
+var baseammo = 1
 var attack_delay = 0.2
 var reload_delay = 2.0
 var scene = preload("res://Icespear/icespear.tscn")
@@ -32,9 +32,8 @@ func _on_reload_timer_timeout() -> void:
 
 func _on_attack_timer_timeout() -> void:
 	if ammo > 0:
-		var target = player.get_random_enemy()
 		var icespear = scene.instantiate()
-		icespear.target = target
+		icespear.level = level
 		add_child(icespear)
 		ammo -= 1
 		attack_timer.start()
