@@ -209,4 +209,23 @@ func _physics_process(delta: float) -> void:
 在物理运动中根据方向角度去修改位置
 
 ## lesson 9
-> 标枪
+> 标枪  
+
+状态：ready，fly
+
+ready
+- 表现：标枪指向player，并围绕其旋转
+- 何时进入：生成时，默认状态。全部目标攻击完毕后(target_array为空)，fly回player时，如果距离player距离<=500，进入ready状态
+
+fly
+- 表现：单次攻击，标枪飞向enemy(target_array获取)
+- 何时进入：attackTimer timeout时(并侦测到敌人时)；飞向敌人与目标敌人发生碰撞（指定下个target，飞行过程中与其他敌人碰撞不会触发进入）；飞向敌人时，目标敌人死亡。
+
+整体流程：
+![Alt text](image-11.png)
+- _ready，匹配等级参数配置属性，进入ready状态
+- attackTime timeout，检查侦测到的敌人数量，如果大于0，根据侦测到的敌人数量更新target_array（全局target_num_max单次完整攻击流程可以被攻击到的目标），进入fly状态。如果timeout时没有检测到敌人，重启attackTime（使用timer来模仿循环）
+- 进入到ready/fly状态，会设置sprite_2d-texture和collision_shape_2d-disabled。在单小次进入fly时，判断target_array-size来判断当前target应该是target_array[0]/player
+- physice_process，运动控制，根据目前所处的状态，调用对应的state_update。
+- state_ready_update，标枪围绕player旋转，player.position.direction_to(position)获取当前标枪指向player的角度，*spawn_distance控制距离。角度+angle_inc（在进入ready时归0，ready_update时累加）控制旋转
+- state_fly_update，如果攻击目标全部攻击完毕（target_array-size==0）并且距离player小于spawn_distance，进入ready状态。使用插值来控制自身到目标的运动`position = position.lerp(target.position, delta * lerp_speed)`（或者position->target获取direction，position += direction * speed * delta）

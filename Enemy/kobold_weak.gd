@@ -4,6 +4,7 @@ extends Enemy
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var player = get_tree().get_first_node_in_group('player') as Player
 #@onready var player = get_node('/root/World/Player') as Player
+@onready var audio_hit: AudioStreamPlayer2D = $AudioHit
 
 
 @export var move_speed = 2500
@@ -33,10 +34,10 @@ func _on_hurt_box_hurt(_hurt_box_owner, hit_obj) -> void:
 	var knockback_force = hit_obj.knockback_force
 	health -= damage
 	knockback = direction * knockback_force
-	AudioBus.play("res://Audio/SoundEffect/enemy_hit.ogg", 1, -10)
 	if health <= 0:
 		death.emit(self)
 		var expolision = explosion_scene.instantiate()
 		expolision.global_position = global_position
 		get_parent().add_child(expolision)
 		queue_free()
+	audio_hit.play()

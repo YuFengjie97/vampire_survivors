@@ -14,38 +14,25 @@ var javelin_attack = preload("res://Textures/Items/Weapons/javelin_3_new_attack.
 var level = 1
 var hp = 9999
 var damage = 5
-var speed = 100
+var speed = 400.
+var direction = Vector2.ZERO
 var attack_size = 1.0
 var knockback_force = 0
 var target_num_max = 3
 var attack_delay = 3
 
-var target = player:
-	set(val):
-		target = val
-		t = 0
-		pos_cur = position
+var target = player
 var target_array: Array[Enemy] = []
-# 标枪在ready/fly时指向target
-var direction = Vector2.ZERO
-var direction_angle = 0
-# 标枪在ready时围绕player旋转
-var rotate_by_center_angle = 0
-var rotate_by_center_speed = deg_to_rad(1)
 var spawn_distance = 100
 
 # 插值变量
-var t = 0
-var pos_cur = Vector2.ZERO
-var pos_tar = Vector2.ZERO
-var lerp_speed = 0.5
+var lerp_speed = 4
 
 enum STATE { READY, FLY }
 var state: STATE = STATE.READY
 
 
 func _ready():
-	pos_cur = player.position
 	attack_delay_timer.wait_time = attack_delay
 	# 围绕player随机位置生成
 	var spawn_angle = randf_range(0, PI * 2)
@@ -53,8 +40,8 @@ func _ready():
 	position = spawn_pos
 	match level:
 		1:
-			damage = 5
-			speed = 300
+			damage = 1
+			speed = 100
 			attack_size = 1.0
 			knockback_force = 0
 	state_ready_enter()
@@ -68,18 +55,18 @@ func _physics_process(delta: float) -> void:
 	if state == STATE.FLY:
 		state_fly_update(delta)
 	
-	#运动
-	t += delta * lerp_speed
-	position = position.lerp(pos_tar, t)
-	
 	#标枪的朝向
-	direction_angle = position.direction_to(target.position).angle()
-	rotation = lerp(rotation, direction_angle, 10 * delta)
+	var direction_angle = position.direction_to(target.position).angle()
+	rotation = lerpf(rotation, direction_angle, 10 * delta)
 
 
 func remove_target_from_array(tar):
 	if target_array.has(tar):
 		target_array.erase(tar)
+	
+	# 攻击目标途中，目标死亡
+	if tar == target:
+		state_fly_enter()
 
 
 
@@ -106,23 +93,28 @@ func update_target_array(detect_enemy_num):
 func hit_enemy(enemy, _weapon):
 	# 击中目标敌人时，移除目标敌人，并更新target
 	remove_target_from_array(enemy)
-	state_fly_enter()
+	if enemy == target:
+		state_fly_enter()
 
 
+var angle = 0
+var angle_inc = 0
 func state_ready_enter():
 	print('ready')
 	state = STATE.READY
 	sprite_2d.texture = javelin_normal
 	collision_shape_2d.call_deferred('set', 'disabled', true)
 	target = player
-	rotate_by_center_angle = position.direction_to(player.position).angle()
 	attack_delay_timer.start()
 	remove_from_hit_once.emit(self)
+	
+	angle = player.position.direction_to(position).angle()
+	angle_inc = 0
+
 
 func state_ready_update(delta):
-	rotate_by_center_angle += rotate_by_center_speed
-	pos_tar = player.position + Vector2.from_angle(rotate_by_center_angle) * spawn_distance
-	
+	angle_inc += deg_to_rad(1)
+	position = player.position + Vector2.from_angle(angle + angle_inc) * spawn_distance
 
 
 func state_fly_enter():
@@ -133,17 +125,20 @@ func state_fly_enter():
 	#从剩余目标中选择一个目标
 	if target_array.size() > 0:
 		target = target_array[0]
-		
 	#全部目标攻击完毕
 	else:
 		target = player
 
 
 func state_fly_update(delta):
-	pos_tar = target.position
 	# 所有目标攻击完毕，回归ready状态
 	if position.distance_to(player.position) <= spawn_distance and target_array.size() == 0:
 		state_ready_enter()
+	#运动
+	#direction = position.direction_to(target.position)
+	#position = position.lerp(target.position, delta * lerp_speed)
+	direction = position.direction_to(target.position)
+	position += direction * speed * delta
 
 
 func _on_attack_delay_timer_timeout() -> void:
