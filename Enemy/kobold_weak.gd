@@ -6,13 +6,14 @@ extends Enemy
 #@onready var player = get_node('/root/World/Player') as Player
 @onready var audio_hit: AudioStreamPlayer2D = $AudioHit
 
-
 @export var move_speed = 2500
 var health = 10
 var knockback = Vector2.ZERO
 var knockback_recory = 30
+var experience = 5
 
-var explosion_scene = preload("res://Explosion/explosion.tscn")
+const gem_scene = preload("res://Gem/gem.tscn")
+const explosion_scene = preload("res://Explosion/explosion.tscn")
 
 
 func _physics_process(delta: float) -> void:
@@ -28,16 +29,31 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.flip_h = false
 
 
+func spawn_gem():
+	var gem = gem_scene.instantiate()
+	gem.experience = experience
+	gem.position = position
+	var p = get_parent()
+	p.call_deferred('add_child', gem)
+
+
+func sapwn_explosion():
+	var expolision = explosion_scene.instantiate()
+	expolision.position = position
+	get_parent().add_child(expolision)
+
+
 func _on_hurt_box_hurt(_hurt_box_owner, hit_obj) -> void:
 	var damage = hit_obj.damage
 	var direction = hit_obj.direction
 	var knockback_force = hit_obj.knockback_force
 	health -= damage
 	knockback = direction * knockback_force
-	if health <= 0:
-		death.emit(self)
-		var expolision = explosion_scene.instantiate()
-		expolision.global_position = global_position
-		get_parent().add_child(expolision)
-		queue_free()
 	audio_hit.play()
+	
+	if health <= 0:
+		sapwn_explosion()
+		spawn_gem()
+		
+		death.emit(self)
+		call_deferred('queue_free')

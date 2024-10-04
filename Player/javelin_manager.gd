@@ -5,7 +5,7 @@ var javelin_scene = preload("res://Javelin/javelin.tscn")
 @onready var player = get_node('/root/World/Player') as Player
 
 var level = 1
-var num_max = 1
+var num_max = 6
 var num = 0
 
 func attack() -> void:

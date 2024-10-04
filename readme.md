@@ -229,3 +229,35 @@ fly
 - physice_process，运动控制，根据目前所处的状态，调用对应的state_update。
 - state_ready_update，标枪围绕player旋转，player.position.direction_to(position)获取当前标枪指向player的角度，*spawn_distance控制距离。角度+angle_inc（在进入ready时归0，ready_update时累加）控制旋转
 - state_fly_update，如果攻击目标全部攻击完毕（target_array-size==0）并且距离player小于spawn_distance，进入ready状态。使用插值来控制自身到目标的运动`position = position.lerp(target.position, delta * lerp_speed)`（或者position->target获取direction，position += direction * speed * delta）
+
+## lesson 10
+> 经验条，经验宝石  
+
+宝石场景
+- ready中根据exprience值设置不同texture
+- physics_process向target运动
+- 被收集时，隐藏sprite，禁用collision，play audio，返回经验值。经验值由enemy死亡，初始化宝石时设置
+- audio play结束，清除
+
+player
+- 添加吸取范围，吸引该范围下的宝石，设置宝石target
+- 添加抓取范围，触发宝石收集方法
+- exp_collected获得的经验
+- exp_level本级升级所需经验
+```
+func level_up():
+	if exp_collected < exp_level:
+		progress_bar_exp.value = exp_collected / exp_level * 100.
+	else:
+		var exp_over = exp_collected - exp_level
+		exp_collected -= exp_level
+		level += 1
+		exp_level = level * 50
+		progress_bar_exp.value = 100.
+		level_up()
+```
+- 获取经验少于本级升级所需经验，更新ui
+- 大于等于，经验减去升级所需经验，升级，更新本级所需经验，更新ui，递归（连续升级）
+
+enemy
+- 死亡根据位置&经验属性生成宝石，指定位置与经验值

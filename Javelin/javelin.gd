@@ -40,8 +40,8 @@ func _ready():
 	position = spawn_pos
 	match level:
 		1:
-			damage = 1
-			speed = 100
+			damage = 20
+			speed = 500
 			attack_size = 1.0
 			knockback_force = 0
 	state_ready_enter()
@@ -100,7 +100,6 @@ func hit_enemy(enemy, _weapon):
 var angle = 0
 var angle_inc = 0
 func state_ready_enter():
-	print('ready')
 	state = STATE.READY
 	sprite_2d.texture = javelin_normal
 	collision_shape_2d.call_deferred('set', 'disabled', true)
@@ -112,13 +111,12 @@ func state_ready_enter():
 	angle_inc = 0
 
 
-func state_ready_update(delta):
+func state_ready_update(_delta):
 	angle_inc += deg_to_rad(1)
 	position = player.position + Vector2.from_angle(angle + angle_inc) * spawn_distance
 
 
 func state_fly_enter():
-	print('fly')
 	state = STATE.FLY
 	sprite_2d.texture = javelin_attack
 	collision_shape_2d.call_deferred('set', 'disabled', false)
@@ -142,7 +140,6 @@ func state_fly_update(delta):
 
 
 func _on_attack_delay_timer_timeout() -> void:
-	print('timeout')
 	var enemy_close_size = player.enemy_close.size()
 	if enemy_close_size > 0:
 		update_target_array(enemy_close_size)

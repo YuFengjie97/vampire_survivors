@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0moc1afjqg2m"]
+
+[ext_resource type="Script" path="res://Gem/gem.gd" id="1_32578"]
+[ext_resource type="Texture2D" uid="uid://bp3x30ech42ts" path="res://Textures/Items/Gems/Gem_blue.png" id="2_qb4bc"]
+[ext_resource type="AudioStream" uid="uid://dvcuwt3t66f50" path="res://Audio/SoundEffect/collectgem.mp3" id="3_p6q0o"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbe53"]
+radius = 4.0
+height = 10.0
+
+[node name="Gem" type="Area2D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_32578")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_qb4bc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("CapsuleShape2D_pbe53")
+
+[node name="AudioCollected" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_p6q0o")
+
+[connection signal="finished" from="AudioCollected" to="." method="_on_audio_collected_finished"]

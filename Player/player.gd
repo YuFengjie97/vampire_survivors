@@ -5,6 +5,8 @@ class_name Player
 @onready var icespear_manager: IcespearManager = $WeaponManager/IcespearManager
 @onready var tornado_manager: TornadoManager = $WeaponManager/TornadoManager
 @onready var javelin_manager: JavelinManager = $WeaponManager/JavelinManager
+@onready var progress_bar_exp: TextureProgressBar = $UILayer/ProgressBarExp
+@onready var label_level: Label = $UILayer/LabelLevel
 
 
 var move_speed = 10000
@@ -12,6 +14,12 @@ var mov = Vector2(0, 0)
 var health = 100
 var enemy_close: Array[Enemy] = []
 var lastmove = Vector2.UP
+var level = 0:
+	set(val):
+		level = val
+		label_level.text = 'Level ' + str(val)
+var exp_collected = 0.
+var exp_level = 50. # 当前级别升级需要的经验
 
 
 func _ready() -> void:
@@ -65,3 +73,26 @@ func _on_detect_zone_body_entered(body: Node2D) -> void:
 
 func _on_detect_zone_body_exited(body: Node2D) -> void:
 	enemy_close.erase(body)
+
+
+func _on_grab_zone_area_entered(area: Area2D) -> void:
+	if area is Gem:
+		area.target = self
+
+
+func _on_collected_zone_area_entered(area: Area2D) -> void:
+	if area is Gem:
+		var experience = area.collected()
+		exp_collected += experience
+		level_up()
+
+
+func level_up():
+	if exp_collected < exp_level:
+		progress_bar_exp.value = exp_collected / exp_level * 100.
+	else:
+		exp_collected -= exp_level
+		level += 1
+		exp_level = level * 50
+		progress_bar_exp.value = 100.
+		level_up()

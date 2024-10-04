@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://difvrsi7vfbo4"]
+[gd_scene load_steps=20 format=3 uid="uid://difvrsi7vfbo4"]
 
 [ext_resource type="Texture2D" uid="uid://dodh7lpff2p1b" path="res://Textures/Player/player_sprite.png" id="1_gfw0c"]
 [ext_resource type="Script" path="res://Player/player.gd" id="1_wh276"]
@@ -6,6 +6,9 @@
 [ext_resource type="Script" path="res://Player/icespear_manager.gd" id="4_j6xhs"]
 [ext_resource type="Script" path="res://Player/tornado_manager.gd" id="5_fa30r"]
 [ext_resource type="Script" path="res://Player/javelin_manager.gd" id="6_ysb6w"]
+[ext_resource type="Texture2D" uid="uid://br8txdflegvy1" path="res://Textures/GUI/exp_background.png" id="7_r08ss"]
+[ext_resource type="FontFile" uid="uid://cehqwyskelxej" path="res://Font/tenderness.otf" id="8_envef"]
+[ext_resource type="Texture2D" uid="uid://wy42ymksglcy" path="res://Textures/GUI/exp_progress.png" id="8_n57vp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_krgl3"]
 atlas = ExtResource("1_gfw0c")
@@ -50,6 +53,15 @@ radius = 259.008
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_doa41"]
 size = Vector2(18, 28)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bm5aa"]
+radius = 62.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3ymst"]
+radius = 9.05539
+
+[sub_resource type="Theme" id="Theme_cygjy"]
+Label/fonts/font = ExtResource("8_envef")
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
@@ -107,6 +119,39 @@ one_shot = true
 [node name="JavelinManager" type="Node" parent="WeaponManager"]
 script = ExtResource("6_ysb6w")
 
+[node name="GrabZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabZone"]
+shape = SubResource("CircleShape2D_bm5aa")
+
+[node name="CollectedZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectedZone"]
+shape = SubResource("CircleShape2D_3ymst")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="ProgressBarExp" type="TextureProgressBar" parent="UILayer"]
+offset_right = 640.0
+offset_bottom = 181.0
+texture_under = ExtResource("7_r08ss")
+texture_progress = ExtResource("8_n57vp")
+
+[node name="LabelLevel" type="Label" parent="UILayer"]
+texture_filter = 1
+offset_left = 557.0
+offset_right = 621.0
+offset_bottom = 19.0
+theme = SubResource("Theme_cygjy")
+theme_override_font_sizes/font_size = 16
+text = "Level 0"
+horizontal_alignment = 2
+vertical_alignment = 2
+
 [connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]
 [connection signal="body_exited" from="DetectZone" to="." method="_on_detect_zone_body_exited"]
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
@@ -114,5 +159,7 @@ script = ExtResource("6_ysb6w")
 [connection signal="timeout" from="WeaponManager/IcespearManager/ReloadTimer" to="WeaponManager/IcespearManager" method="_on_reload_timer_timeout"]
 [connection signal="timeout" from="WeaponManager/TornadoManager/AttackTimer" to="WeaponManager/TornadoManager" method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="WeaponManager/TornadoManager/ReloadTimer" to="WeaponManager/TornadoManager" method="_on_reload_timer_timeout"]
+[connection signal="area_entered" from="GrabZone" to="." method="_on_grab_zone_area_entered"]
+[connection signal="area_entered" from="CollectedZone" to="." method="_on_collected_zone_area_entered"]
 
 [editable path="HurtBox"]
