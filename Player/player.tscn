@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://difvrsi7vfbo4"]
+[gd_scene load_steps=22 format=3 uid="uid://difvrsi7vfbo4"]
 
 [ext_resource type="Texture2D" uid="uid://dodh7lpff2p1b" path="res://Textures/Player/player_sprite.png" id="1_gfw0c"]
 [ext_resource type="Script" path="res://Player/player.gd" id="1_wh276"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://br8txdflegvy1" path="res://Textures/GUI/exp_background.png" id="7_r08ss"]
 [ext_resource type="FontFile" uid="uid://cehqwyskelxej" path="res://Font/tenderness.otf" id="8_envef"]
 [ext_resource type="Texture2D" uid="uid://wy42ymksglcy" path="res://Textures/GUI/exp_progress.png" id="8_n57vp"]
+[ext_resource type="Theme" uid="uid://dqpxgqn16w41e" path="res://Theme/base.tres" id="10_0rfxm"]
+[ext_resource type="AudioStream" uid="uid://cmm2xds4o3w13" path="res://Audio/SoundEffect/levelup.ogg" id="11_3s63i"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_krgl3"]
 atlas = ExtResource("1_gfw0c")
@@ -151,6 +153,35 @@ theme_override_font_sizes/font_size = 16
 text = "Level 0"
 horizontal_alignment = 2
 vertical_alignment = 2
+
+[node name="LevelUpPanel" type="PanelContainer" parent="UILayer"]
+process_mode = 2
+offset_left = 647.0
+offset_top = 30.0
+offset_right = 847.0
+offset_bottom = 191.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/LevelUpPanel"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/LevelUpPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="LabelLevelUp" type="Label" parent="UILayer/LevelUpPanel/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("10_0rfxm")
+theme_override_font_sizes/font_size = 20
+text = "Level Up"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelUpItemsContainer" type="VBoxContainer" parent="UILayer/LevelUpPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="AudioLevelUp" type="AudioStreamPlayer2D" parent="UILayer/LevelUpPanel"]
+stream = ExtResource("11_3s63i")
 
 [connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]
 [connection signal="body_exited" from="DetectZone" to="." method="_on_detect_zone_body_exited"]

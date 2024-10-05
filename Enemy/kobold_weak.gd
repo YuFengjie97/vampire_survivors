@@ -10,7 +10,7 @@ extends Enemy
 var health = 10
 var knockback = Vector2.ZERO
 var knockback_recory = 30
-var experience = 5
+var experience = 1000
 
 const gem_scene = preload("res://Gem/gem.tscn")
 const explosion_scene = preload("res://Explosion/explosion.tscn")

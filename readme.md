@@ -261,3 +261,17 @@ func level_up():
 
 enemy
 - 死亡根据位置&经验属性生成宝石，指定位置与经验值
+
+lesson 11
+> 升级项  
+
+升级选项卡
+![Alt text](image-12.png)
+PanelContainer没有pressed事件，用mouse in mouse out，并且添加全局映射click事件模拟点击。
+如果用button/textureButton包裹PanelContainer，button不能监测子控件的size
+
+升级选项菜单
+- 在level up时，get_tree().paused = true暂停游戏
+- 使用tween移动菜单到视口中心
+- 菜单，process-mode-when puased，只在暂停时运行
+- 注意tween的创建，要在菜单节点上创建`var tween = level_up_panel.create_tween()`
