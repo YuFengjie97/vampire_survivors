@@ -1,22 +1,26 @@
 extends CharacterBody2D
 class_name Player
 
-signal level_up_chosed
+signal upgrade_chosed
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@onready var icespear_manager: IcespearManager = $WeaponManager/IcespearManager
-@onready var tornado_manager: TornadoManager = $WeaponManager/TornadoManager
-@onready var javelin_manager: JavelinManager = $WeaponManager/JavelinManager
 @onready var progress_bar_exp: TextureProgressBar = $UILayer/ProgressBarExp
 @onready var label_level: Label = $UILayer/LabelLevel
 @onready var audio_level_up: AudioStreamPlayer2D = $UILayer/LevelUpPanel/AudioLevelUp
 @onready var level_up_panel: PanelContainer = $UILayer/LevelUpPanel
 @onready var level_up_items_container: VBoxContainer = $UILayer/LevelUpPanel/VBoxContainer/LevelUpItemsContainer
+@onready var upgrade_icon_container: GridContainer = $UILayer/UpgradeIconContainer
+@onready var icespear_manager: IcespearManager = %IcespearManager
+@onready var tornado_manager: TornadoManager = %TornadoManager
+@onready var javelin_manager: JavelinManager = %JavelinManager
 
+
+const UPGRADE_ITEM_ICON = preload("res://UpgradeItemIcon/upgrade_item_icon.tscn")
 const LEVEL_UP_OPTION_ITEM = preload("res://LevelUpOptionItem/level_up_option_item.tscn")
-var move_speed = 10000
+var move_speed = 5000
 var mov = Vector2(0, 0)
-var health = 100
+var health = 300
+var maxhealth = 1000
 var enemy_close: Array[Enemy] = []
 var lastmove = Vector2.UP
 var level = 0:
@@ -24,13 +28,33 @@ var level = 0:
 		level = val
 		label_level.text = 'Level ' + str(val)
 var exp_collected = 0.
-var exp_level = 50. # 当前级别升级需要的经验
-var level_up_item_max = 3
+var exp_level = 10. # 当前级别升级需要的经验
+var upgrade_max = 3
+var upgrade_collected = {} # 已经获得的升级
+
+
+var icespear_level = 0
+var icespear_baseammo = 0
+var tornado_level = 0
+var tornado_baseammo = 0
+var tornado_attackspeed = 0
+var javelin_level = 0
+var javelin_ammo = 0
+var armor = 0
+var spell_size = 1.
+var spell_cooldown = 0
+var additional_attacks = 0
+
 
 func _ready() -> void:
-	icespear_manager.attack()
-	tornado_manager.attack()
-	javelin_manager.attack()
+	upgrade_chosed.connect(icespear_manager.on_player_upgrade)
+	upgrade_chosed.connect(tornado_manager.on_player_upgrade)
+	upgrade_chosed.connect(javelin_manager.on_player_upgrade)
+	
+	upgrade('icespear1')
+	upgrade_chosed.emit()
+
+
 
 
 func _input(_event):
@@ -60,9 +84,9 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_hurt_box_hurt(_hurt_box_owner, hit_obj) -> void:
-	health -= hit_obj.damage
+	health -= clamp(hit_obj.damage, 1, hit_obj.damage - armor)
 	if health <= 0:
-		pass
+		print('player death')
 
 
 func get_random_enemy():
@@ -97,33 +121,134 @@ func level_up():
 		progress_bar_exp.value = exp_collected / exp_level * 100.
 	else:
 		progress_bar_exp.value = 100
-		show_level_up_options()
-		await level_up_chosed
+		show_upgrade_options()
+		await upgrade_chosed
 		exp_collected -= exp_level
 		level += 1
-		exp_level = level * 50
+		exp_level = level * 10
 		level_up()
 
+# 升级项被选择
+func upgrade(upgrade_key):
+	if UpgradeDb.UPGRADES[upgrade_key].type != 'item':
+		var upgrade_item = UpgradeDb.UPGRADES[upgrade_key]
+		upgrade_collected[upgrade_key] = upgrade_item
+		
+		# 判断重复的图标->不展示
+		var is_have_icon = upgrade_collected.values().filter(func (item): return item.displayname == upgrade_item.displayname).size() > 1
+		if not is_have_icon:
+			var upgrade_icon = UPGRADE_ITEM_ICON.instantiate()
+			upgrade_icon.upgrade_key = upgrade_key
+			upgrade_icon_container.add_child(upgrade_icon)
+	hide_upgrade_options()
+	match upgrade_key:
+		"icespear1":
+			icespear_level = 1
+			icespear_baseammo += 1
+		"icespear2":
+			icespear_level = 2
+			icespear_baseammo += 1
+		"icespear3":
+			icespear_level = 3
+		"icespear4":
+			icespear_level = 4
+			icespear_baseammo += 2
+		"tornado1":
+			tornado_level = 1
+			tornado_baseammo += 1
+		"tornado2":
+			tornado_level = 2
+			tornado_baseammo += 1
+		"tornado3":
+			tornado_level = 3
+			tornado_attackspeed -= 0.5
+		"tornado4":
+			tornado_level = 4
+			tornado_baseammo += 1
+		"javelin1":
+			javelin_level = 1
+			javelin_ammo = 1
+		"javelin2":
+			javelin_level = 2
+		"javelin3":
+			javelin_level = 3
+		"javelin4":
+			javelin_level = 4
+		"armor1","armor2","armor3","armor4":
+			armor += 1
+		"speed1","speed2","speed3","speed4":
+			move_speed += 20.0
+		"tome1","tome2","tome3","tome4":
+			spell_size += 0.10
+		"scroll1","scroll2","scroll3","scroll4":
+			spell_cooldown += 0.05
+		"ring1","ring2":
+			additional_attacks += 1
+		"food":
+			health += 20
+			health = clamp(health, 0, maxhealth)
 
-func upgrade(upgrade_info):
-	print(upgrade_info)
-	hide_level_up_options()
+
+func get_random_upgrade_items():
+	var item_can_chosed = []
+	for item_key in UpgradeDb.UPGRADES:
+		var item = UpgradeDb.UPGRADES[item_key]
+		# 先不选择item类型的升级
+		if item.type == 'item':
+			pass
+		# 已经拥有的升级
+		if upgrade_collected.keys().has(item_key):
+			pass
+		# 已经进行选择的升级
+		elif item_can_chosed.has(item_key):
+			pass
+		#不满足前置条件的升级
+		elif item.prerequisite.size() > 0:
+			var can_add = true
+			for prerequisite in item.prerequisite:
+				if not upgrade_collected.keys().has(prerequisite):
+					can_add = false
+			if can_add:
+				item_can_chosed.append(item_key)
+		else:
+			item_can_chosed.append(item_key)
+	
+	var upgrade_items = []
+	var n = 0
+	while n < upgrade_max:
+		if item_can_chosed.size() > 0:
+			var random_item = item_can_chosed.pick_random()
+			upgrade_items.append(random_item)
+			item_can_chosed.erase(random_item)
+		else:
+			# 不足的升级项目用食物补全
+			upgrade_items.append('food')
+		n += 1
+
+	return upgrade_items
 
 
-func spawn_level_up_item():
+func spawn_upgrade_item():
 	for child in level_up_items_container.get_children():
 		child.queue_free()
-	
-	for i in range(level_up_item_max):
+
+	var upgrade_chosed = get_random_upgrade_items()
+	for item_key in upgrade_chosed:
+		var upgrade_item = UpgradeDb.UPGRADES[item_key]
 		var item = LEVEL_UP_OPTION_ITEM.instantiate()
+		item.key = item_key
+		item.item_icon = load(upgrade_item.icon)
+		item.item_name = upgrade_item.displayname
+		item.item_level = str(upgrade_item.level)
+		item.item_description = upgrade_item.details
 		item.selected_upgrade.connect(upgrade)
 		level_up_items_container.add_child(item)
 
 
-func show_level_up_options():
+func show_upgrade_options():
 	get_tree().paused = true
 	audio_level_up.play()
-	spawn_level_up_item()
+	spawn_upgrade_item()
 	
 	var tween = level_up_panel.create_tween()
 	var view_width = get_viewport_rect().size.x
@@ -131,9 +256,7 @@ func show_level_up_options():
 	tween.tween_property(level_up_panel, "position", Vector2(view_width / 2. - panel_width / 2., 30), 0.35).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 
 
-func hide_level_up_options():
-	level_up_chosed.emit()
+func hide_upgrade_options():
 	level_up_panel.position = Vector2(680, 30)
 	get_tree().paused = false
-	
-	
+	upgrade_chosed.emit()

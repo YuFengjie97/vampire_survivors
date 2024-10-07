@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://yr1qu0amt3qg"]
+
+[ext_resource type="Script" path="res://UpgradeItemIcon/upgrade_item_icon.gd" id="1_fs4j1"]
+[ext_resource type="Texture2D" uid="uid://ju0q8rdfb1ol" path="res://Textures/Items/Upgrades/chunk.png" id="2_3136w"]
+
+[node name="UpgradeItemIcon" type="MarginContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_fs4j1")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_3136w")
+expand_mode = 5
+stretch_mode = 4

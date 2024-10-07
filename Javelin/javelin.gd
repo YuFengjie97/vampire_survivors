@@ -17,6 +17,7 @@ var damage = 5
 var speed = 400.
 var direction = Vector2.ZERO
 var attack_size = 1.0
+var additional_size = 0.
 var knockback_force = 0
 var target_num_max = 3
 var attack_delay = 3
@@ -40,10 +41,25 @@ func _ready():
 	position = spawn_pos
 	match level:
 		1:
-			damage = 20
+			damage = 2
+			speed = 300
+			attack_size = 1.0
+			knockback_force = 0
+		2:
+			damage = 4
 			speed = 500
 			attack_size = 1.0
 			knockback_force = 0
+		3:
+			damage = 6
+			speed = 700
+			attack_size = 1.0
+			knockback_force = 0
+		4:
+			damage = 10
+			speed = 700
+			attack_size = 1.0
+			knockback_force = 10
 	state_ready_enter()
 
 

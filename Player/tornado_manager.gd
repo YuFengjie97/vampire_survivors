@@ -21,7 +21,7 @@ func _ready() -> void:
 
 
 func attack():
-	if level > 0:
+	if level > 0 and reload_timer.is_stopped():
 		reload_timer.start()
 
 
@@ -34,8 +34,16 @@ func _on_attack_timer_timeout() -> void:
 	if ammo > 0:
 		var tornado = scene.instantiate() as Tornado
 		tornado.level = level
+		tornado.additional_size = player.spell_size
 		add_child(tornado)
 		ammo -= 1
 		attack_timer.start()
 	else:
 		reload_timer.start()
+
+
+func on_player_upgrade():
+	level = player.tornado_level
+	baseammo = player.tornado_baseammo + player.additional_attacks
+	reload_timer.wait_time = clamp(reload_timer.wait_time - player.spell_cooldown, 0.01, reload_timer.wait_time - player.spell_cooldown)
+	attack()

@@ -262,7 +262,7 @@ func level_up():
 enemy
 - 死亡根据位置&经验属性生成宝石，指定位置与经验值
 
-lesson 11
+## lesson 11
 > 升级项  
 
 升级选项卡
@@ -275,3 +275,20 @@ PanelContainer没有pressed事件，用mouse in mouse out，并且添加全局�
 - 使用tween移动菜单到视口中心
 - 菜单，process-mode-when puased，只在暂停时运行
 - 注意tween的创建，要在菜单节点上创建`var tween = level_up_panel.create_tween()`
+
+## lesson 12
+> 升级项应用  
+
+单例模式,数据库
+- 数据库为升级选项卡提供 icon,name,level,description说明,(其中的name属性被我用来判断重复武器,但是不应该是name),type属性判断物品种类,prerequisite武器前置条件
+
+生成随机选项
+- 排除已拥有的
+- 排除本次生成已选择的
+- 用food补全剩余选择次数
+
+角色升级属性
+- 每种武器的关键属性,关键角色属性
+- match数据库(字典)key,调整以上属性
+- 升级信号绑定武器管理子节点func
+- 子节点获取player关键属性,进行自身以及武器实例设置

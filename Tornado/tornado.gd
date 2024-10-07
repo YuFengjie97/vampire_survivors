@@ -11,6 +11,7 @@ var hp = 9999
 var damage = 5
 var speed = 70
 var attack_size = 1.0
+var additional_size = 0.
 var knockback_force = 5000
 
 var direction = Vector2.RIGHT
@@ -30,9 +31,27 @@ func _ready():
 	match level:
 		1:
 			hp = 9999
-			damage = 5
+			damage = 4
 			speed = 70
 			attack_size = 1.0
+			knockback_force = 5000
+		2:
+			hp = 9999
+			damage = 8
+			speed = 70
+			attack_size = 1.0
+			knockback_force = 5000
+		3:
+			hp = 9999
+			damage = 10
+			speed = 70
+			attack_size = 1.0
+			knockback_force = 5000
+		4:
+			hp = 9999
+			damage = 20
+			speed = 100
+			attack_size = 1.5
 			knockback_force = 5000
 
 

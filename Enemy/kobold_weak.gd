@@ -5,16 +5,20 @@ extends Enemy
 @onready var player = get_tree().get_first_node_in_group('player') as Player
 #@onready var player = get_node('/root/World/Player') as Player
 @onready var audio_hit: AudioStreamPlayer2D = $AudioHit
+@onready var hit_box: HitBox = %HitBox
 
 @export var move_speed = 2500
 var health = 10
 var knockback = Vector2.ZERO
 var knockback_recory = 30
-var experience = 1000
+var experience = 10
+var damage = 2
 
 const gem_scene = preload("res://Gem/gem.tscn")
 const explosion_scene = preload("res://Explosion/explosion.tscn")
 
+func _ready():
+	hit_box.damage = damage
 
 func _physics_process(delta: float) -> void:
 	var direction = global_position.direction_to(player.global_position)

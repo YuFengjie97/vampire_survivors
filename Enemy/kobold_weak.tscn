@@ -56,6 +56,7 @@ position = Vector2(2, 4)
 shape = SubResource("CapsuleShape2D_wmm44")
 
 [node name="HitBox" parent="." instance=ExtResource("3_e0aj1")]
+unique_name_in_owner = true
 collision_layer = 4
 
 [node name="CollisionShape2D" parent="HitBox" index="0"]
@@ -64,6 +65,7 @@ shape = SubResource("RectangleShape2D_vjgtt")
 debug_color = Color(0.870382, 0.105639, 0.527846, 0.42)
 
 [node name="HurtBox" parent="." instance=ExtResource("4_iok15")]
+unique_name_in_owner = true
 collision_layer = 4
 collision_mask = 16
 current_type = 1

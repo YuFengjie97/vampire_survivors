@@ -13,6 +13,7 @@ var hp = 2
 var damage = 5
 var speed = 70
 var attack_size = 1.0
+var additional_size = 0.
 var knockback_force = 5000 # 击退力量
 
 var target = Vector2.ZERO
@@ -27,10 +28,25 @@ func _ready() -> void:
 		target = Vector2.RIGHT
 	match level:
 		1:
-			hp = 2
+			hp = 1
 			damage = 5
 			speed = 100
 			attack_size = 1.0
+		2:
+			hp = 2
+			damage = 10
+			speed = 100
+			attack_size = 1.0
+		3:
+			hp = 3
+			damage = 15
+			speed = 200
+			attack_size = 1.2
+		4:
+			hp = 4
+			damage = 15
+			speed = 300
+			attack_size = 1.4
 	direction = global_position.direction_to(target)
 	rotation = direction.angle()
 	AudioBus.play("res://Audio/SoundEffect/ice.wav", 4)
