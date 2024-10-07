@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name Player
 
 signal upgrade_chosed
+signal hp_change
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var progress_bar_exp: TextureProgressBar = $UILayer/ProgressBarExp
@@ -9,18 +10,21 @@ signal upgrade_chosed
 @onready var audio_level_up: AudioStreamPlayer2D = $UILayer/LevelUpPanel/AudioLevelUp
 @onready var level_up_panel: PanelContainer = $UILayer/LevelUpPanel
 @onready var level_up_items_container: VBoxContainer = $UILayer/LevelUpPanel/VBoxContainer/LevelUpItemsContainer
-@onready var upgrade_icon_container: GridContainer = $UILayer/UpgradeIconContainer
 @onready var icespear_manager: IcespearManager = %IcespearManager
 @onready var tornado_manager: TornadoManager = %TornadoManager
 @onready var javelin_manager: JavelinManager = %JavelinManager
+@onready var player_hp_bar: PlayerHpBar = %PlayerHpBar
+@onready var label_time: Label = %LabelTime
+@onready var weapon_icon_container: GridContainer = %WeaponIconContainer
+@onready var upgrade_icon_container: GridContainer = %UpgradeIconContainer
 
 
 const UPGRADE_ITEM_ICON = preload("res://UpgradeItemIcon/upgrade_item_icon.tscn")
 const LEVEL_UP_OPTION_ITEM = preload("res://LevelUpOptionItem/level_up_option_item.tscn")
 var move_speed = 5000
 var mov = Vector2(0, 0)
-var health = 300
-var maxhealth = 1000
+var health = 1000.
+var maxhealth = 1000.
 var enemy_close: Array[Enemy] = []
 var lastmove = Vector2.UP
 var level = 0:
@@ -50,6 +54,7 @@ func _ready() -> void:
 	upgrade_chosed.connect(icespear_manager.on_player_upgrade)
 	upgrade_chosed.connect(tornado_manager.on_player_upgrade)
 	upgrade_chosed.connect(javelin_manager.on_player_upgrade)
+	hp_change.connect(player_hp_bar.on_player_hp_change)
 	
 	upgrade('icespear1')
 	upgrade_chosed.emit()
@@ -85,6 +90,7 @@ func _physics_process(delta: float) -> void:
 
 func _on_hurt_box_hurt(_hurt_box_owner, hit_obj) -> void:
 	health -= clamp(hit_obj.damage, 1, hit_obj.damage - armor)
+	hp_change.emit(health, maxhealth)
 	if health <= 0:
 		print('player death')
 
@@ -139,7 +145,10 @@ func upgrade(upgrade_key):
 		if not is_have_icon:
 			var upgrade_icon = UPGRADE_ITEM_ICON.instantiate()
 			upgrade_icon.upgrade_key = upgrade_key
-			upgrade_icon_container.add_child(upgrade_icon)
+			if upgrade_item.type == 'weapon':
+				weapon_icon_container.add_child(upgrade_icon)
+			if upgrade_item.type == 'upgrade':
+				upgrade_icon_container.add_child(upgrade_icon)
 	hide_upgrade_options()
 	match upgrade_key:
 		"icespear1":
@@ -185,8 +194,9 @@ func upgrade(upgrade_key):
 		"ring1","ring2":
 			additional_attacks += 1
 		"food":
-			health += 20
-			health = clamp(health, 0, maxhealth)
+			health += 20.
+			health = clamp(health, 0., maxhealth)
+			hp_change.emit(health, maxhealth)
 
 
 func get_random_upgrade_items():
@@ -260,3 +270,12 @@ func hide_upgrade_options():
 	level_up_panel.position = Vector2(680, 30)
 	get_tree().paused = false
 	upgrade_chosed.emit()
+
+
+func on_time_change(seconds):
+	print(seconds)
+	var m = int(seconds / 60)
+	var s = seconds - m * 60
+	var mm = str(m) if m >= 10 else ('0'+str(m))
+	var ss = str(s) if s >= 10 else ('0'+str(s))
+	label_time.text = mm + ':' + ss

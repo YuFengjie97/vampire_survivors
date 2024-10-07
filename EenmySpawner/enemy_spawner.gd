@@ -1,14 +1,21 @@
 extends Node2D
 
+signal time_change
+
 @export var spawne_info_array: Array[SpawnInfo] = []
 var time = 0
 
 @onready var timer: Timer = $Timer
-@onready var player: Player = get_tree().get_first_node_in_group('player')
+@onready var player: Player = get_tree().get_first_node_in_group('player') as Player
+
+
+func _ready():
+	time_change.connect(player.on_time_change)
 
 
 func _on_timer_timeout() -> void:
 	time += 1
+	time_change.emit(time)
 	for spawn_info in spawne_info_array:
 		if time >= spawn_info.time_start and time <= spawn_info.time_end:
 			if spawn_info.spawn_delay_counter < spawn_info.spawn_delay:

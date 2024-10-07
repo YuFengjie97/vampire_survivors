@@ -292,3 +292,20 @@ PanelContainer没有pressed事件，用mouse in mouse out，并且添加全局�
 - match数据库(字典)key,调整以上属性
 - 升级信号绑定武器管理子节点func
 - 子节点获取player关键属性,进行自身以及武器实例设置
+
+## lesson 13
+> 血条,计时器,已收集升级项展示
+
+血条
+- 没有依照教程,将血条UI放到canvaslayer层,中心位置.虽然player的相对于canvaslayer的位置永远是中心
+- 将血条节点放置player下,使用process获取player-global_position来更新自身global_position
+
+计时器
+- 信号发生于EnemySpawn(属于与player同级),在其ready中获取player绑定func
+
+收集项
+- 容器设置是非常烦人的
+- 原版游戏中,武器最大数量是6,但是可以超过这个限制.使用6列的gridContainer存放weapon icon
+- 另外也使用6列gridContainer存放upgrade icon
+- 两个gridContainer放到VBoxContainer
+- 不知道我哪里尺寸或设置有问题,在同行添加多个icon时,icon会被挤压尺寸,就像是flow布局被挤压一样
