@@ -309,3 +309,18 @@ PanelContainer没有pressed事件，用mouse in mouse out，并且添加全局�
 - 另外也使用6列gridContainer存放upgrade icon
 - 两个gridContainer放到VBoxContainer
 - 不知道我哪里尺寸或设置有问题,在同行添加多个icon时,icon会被挤压尺寸,就像是flow布局被挤压一样
+
+## lesson 14
+> 更多敌人类型,敌人封装
+
+- 主脚本,enemy.gd
+- 主场景,enemy.tscn
+
+子类敌人封装
+脚本继承
+- 类关键字extends
+- super调用父类
+
+场景封装
+- **场景>新建继承场景**
+- 继承场景的animateSprite2d不支持直接修改精灵表(可能是出于对父类隔离的考虑),需要重新新建精灵表资源,在新的动画上修改

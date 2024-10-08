@@ -1,18 +1,54 @@
-[gd_scene load_steps=7 format=3 uid="uid://bf7qqawqk6j13"]
+[gd_scene load_steps=15 format=3 uid="uid://bf7qqawqk6j13"]
 
 [ext_resource type="Texture2D" uid="uid://rlrxyxftcvx0" path="res://Textures/dirt_full_new.png" id="1_kjaqr"]
 [ext_resource type="PackedScene" uid="uid://difvrsi7vfbo4" path="res://Player/player.tscn" id="2_l4bi8"]
-[ext_resource type="PackedScene" uid="uid://ceev5jwib2d86" path="res://Enemy/kobold_weak.tscn" id="3_p5g3q"]
+[ext_resource type="PackedScene" uid="uid://ceev5jwib2d86" path="res://Enemy/enemy_kobold_strong.tscn" id="3_p5g3q"]
 [ext_resource type="PackedScene" uid="uid://b04xc6exnoyrp" path="res://EenmySpawner/enemy_spawner.tscn" id="3_w6ady"]
 [ext_resource type="Script" path="res://Utility/spawn_info.gd" id="4_wgrj1"]
+[ext_resource type="PackedScene" uid="uid://dkv246570le3f" path="res://Enemy/enemy_kobold_weak.tscn" id="5_djkdo"]
+[ext_resource type="PackedScene" uid="uid://tavr8tiobwg2" path="res://Enemy/enemy_juggernaut.tscn" id="7_wy7yw"]
+[ext_resource type="PackedScene" uid="uid://4cqhctbecxgj" path="res://Enemy/enemy_cyclops.tscn" id="8_842iv"]
+[ext_resource type="PackedScene" uid="uid://bxysuqfw80br" path="res://Enemy/enemy_giant_amoeba.tscn" id="9_tn57w"]
 
 [sub_resource type="Resource" id="Resource_ofkhf"]
 script = ExtResource("4_wgrj1")
 time_start = 0
-time_end = 60
+time_end = 10
+enemy_scene = ExtResource("5_djkdo")
+enemy_num = 10
+spawn_delay = 2
+
+[sub_resource type="Resource" id="Resource_f1nmw"]
+script = ExtResource("4_wgrj1")
+time_start = 11
+time_end = 20
 enemy_scene = ExtResource("3_p5g3q")
 enemy_num = 10
 spawn_delay = 2
+
+[sub_resource type="Resource" id="Resource_s1mjj"]
+script = ExtResource("4_wgrj1")
+time_start = 21
+time_end = 30
+enemy_scene = ExtResource("7_wy7yw")
+enemy_num = 10
+spawn_delay = 2
+
+[sub_resource type="Resource" id="Resource_nb8sr"]
+script = ExtResource("4_wgrj1")
+time_start = 31
+time_end = 40
+enemy_scene = ExtResource("8_842iv")
+enemy_num = 10
+spawn_delay = 2
+
+[sub_resource type="Resource" id="Resource_e3vit"]
+script = ExtResource("4_wgrj1")
+time_start = 41
+time_end = 42
+enemy_scene = ExtResource("9_tn57w")
+enemy_num = 1
+spawn_delay = 1
 
 [node name="World" type="Node2D"]
 
@@ -26,4 +62,4 @@ region_rect = Rect2(0, 0, 4000, 4000)
 unique_name_in_owner = true
 
 [node name="EnemySpawner" parent="." instance=ExtResource("3_w6ady")]
-spawne_info_array = Array[ExtResource("4_wgrj1")]([SubResource("Resource_ofkhf")])
+spawne_info_array = Array[ExtResource("4_wgrj1")]([SubResource("Resource_ofkhf"), SubResource("Resource_f1nmw"), SubResource("Resource_s1mjj"), SubResource("Resource_nb8sr"), SubResource("Resource_e3vit")])

@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://tavr8tiobwg2"]
+
+[ext_resource type="PackedScene" uid="uid://c8yotknuqyg6p" path="res://Enemy/enemy.tscn" id="1_8uuwq"]
+[ext_resource type="Script" path="res://Enemy/enemy_juggernaut.gd" id="2_h15xo"]
+[ext_resource type="Texture2D" uid="uid://ch8m5r480y56e" path="res://Textures/Enemy/juggernaut.png" id="3_pf804"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cybw1"]
+atlas = ExtResource("3_pf804")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gm6fy"]
+atlas = ExtResource("3_pf804")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k8res"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cybw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gm6fy")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="EnemyJuggernaut" instance=ExtResource("1_8uuwq")]
+script = ExtResource("2_h15xo")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_k8res")
+autoplay = ""
+
+[editable path="HitBox"]
+[editable path="HurtBox"]

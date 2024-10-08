@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://bxysuqfw80br"]
+
+[ext_resource type="PackedScene" uid="uid://c8yotknuqyg6p" path="res://Enemy/enemy.tscn" id="1_ap4se"]
+[ext_resource type="Script" path="res://Enemy/enemy_giant_amoeba.gd" id="2_eh64j"]
+[ext_resource type="Texture2D" uid="uid://cyjq5qlatqp5l" path="res://Textures/Enemy/giant_amoeba_new.png" id="3_nnxab"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6po3x"]
+atlas = ExtResource("3_nnxab")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h41ra"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6po3x")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="EnemyGiantAmoeba" instance=ExtResource("1_ap4se")]
+script = ExtResource("2_eh64j")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_h41ra")
+autoplay = ""
+
+[editable path="HitBox"]
+[editable path="HurtBox"]

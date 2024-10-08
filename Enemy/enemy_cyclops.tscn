@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://4cqhctbecxgj"]
+
+[ext_resource type="PackedScene" uid="uid://c8yotknuqyg6p" path="res://Enemy/enemy.tscn" id="1_1srfc"]
+[ext_resource type="Script" path="res://Enemy/enemy_cyclops.gd" id="2_h67b4"]
+[ext_resource type="Texture2D" uid="uid://c8lyofrtk3vee" path="res://Textures/Enemy/cyclops.png" id="2_n0um3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fns1g"]
+atlas = ExtResource("2_n0um3")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eirs0"]
+atlas = ExtResource("2_n0um3")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u638c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fns1g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eirs0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="EnemyCyclops" instance=ExtResource("1_1srfc")]
+script = ExtResource("2_h67b4")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_u638c")
+autoplay = ""
+
+[editable path="HitBox"]
+[editable path="HurtBox"]

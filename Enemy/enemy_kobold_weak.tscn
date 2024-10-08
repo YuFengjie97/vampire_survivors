@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://dkv246570le3f"]
+
+[ext_resource type="PackedScene" uid="uid://c8yotknuqyg6p" path="res://Enemy/enemy.tscn" id="1_2i74v"]
+[ext_resource type="Script" path="res://Enemy/enemy_kobold_weak.gd" id="2_5gh3u"]
+[ext_resource type="Texture2D" uid="uid://twh4ef72ss1j" path="res://Textures/Enemy/kolbold_weak.png" id="2_wqh4g"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqdwd"]
+atlas = ExtResource("2_wqh4g")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2qew"]
+atlas = ExtResource("2_wqh4g")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7dvyp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqdwd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q2qew")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="EnemyKoboldWeak" instance=ExtResource("1_2i74v")]
+script = ExtResource("2_5gh3u")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_7dvyp")
+autoplay = ""
+
+[editable path="HitBox"]
+[editable path="HurtBox"]
