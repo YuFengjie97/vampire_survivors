@@ -3,4 +3,5 @@
 [ext_resource type="FontFile" uid="uid://cehqwyskelxej" path="res://Font/tenderness.otf" id="1_0oft7"]
 
 [resource]
+Button/fonts/font = ExtResource("1_0oft7")
 Label/fonts/font = ExtResource("1_0oft7")

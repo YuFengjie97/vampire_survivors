@@ -3,6 +3,7 @@ class_name Player
 
 signal upgrade_chosed
 signal hp_change
+signal death
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var progress_bar_exp: TextureProgressBar = $UILayer/ProgressBarExp
@@ -17,14 +18,17 @@ signal hp_change
 @onready var label_time: Label = %LabelTime
 @onready var weapon_icon_container: GridContainer = %WeaponIconContainer
 @onready var upgrade_icon_container: GridContainer = %UpgradeIconContainer
+@onready var death_menu: PanelContainer = %DeathMenu
+@onready var label_death_title: Label = %LabelDeathTitle
+@onready var audio_lose: AudioStreamPlayer = %AudioLose
 
 
 const UPGRADE_ITEM_ICON = preload("res://UpgradeItemIcon/upgrade_item_icon.tscn")
 const LEVEL_UP_OPTION_ITEM = preload("res://LevelUpOptionItem/level_up_option_item.tscn")
 var move_speed = 5000
 var mov = Vector2(0, 0)
-var health = 1000.
-var maxhealth = 1000.
+var health = 10.
+var maxhealth = 10.
 var enemy_close: Array[Enemy] = []
 var lastmove = Vector2.UP
 var level = 0:
@@ -88,12 +92,12 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func _on_hurt_box_hurt(_hurt_box_owner, hit_obj) -> void:
+func _on_hurt_box_hurt(hurt_box_owner, hit_obj) -> void:
 	health -= clamp(hit_obj.damage, 1, hit_obj.damage - armor)
 	hp_change.emit(health, maxhealth)
 	if health <= 0:
-		print('player death')
-
+		var is_kill_by_death_god = hit_obj.owner.enemy_type == 'death_god'
+		handle_death(is_kill_by_death_god)
 
 func get_random_enemy():
 	if enemy_close.size() > 0:
@@ -273,9 +277,31 @@ func hide_upgrade_options():
 
 
 func on_time_change(seconds):
-	print(seconds)
 	var m = int(seconds / 60)
 	var s = seconds - m * 60
 	var mm = str(m) if m >= 10 else ('0'+str(m))
 	var ss = str(s) if s >= 10 else ('0'+str(s))
 	label_time.text = mm + ':' + ss
+
+
+func handle_death(is_kill_by_death_god):
+	death.emit()
+	if is_kill_by_death_god:
+		label_death_title.text = 'You Win'
+	else:
+		label_death_title.text = 'You lose'
+	get_tree().paused = true
+	show_death_menu()
+	
+
+
+func show_death_menu():
+	audio_lose.play()
+	var view_width = get_viewport_rect().size.x
+	var tween = death_menu.create_tween()
+	tween.tween_property(death_menu, 'position', Vector2(view_width / 2. - death_menu.size.x / 2., 130.), 1.35).set_ease(Tween.EASE_OUT)
+
+
+func _on_button_menu_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://StartMenu/start_menu.tscn")

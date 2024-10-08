@@ -16,6 +16,7 @@ signal death(its_self)
 @export var knockback_recory = 30
 @export var experience = 10
 @export var damage = 2
+var enemy_type = 'normal'
 
 const gem_scene = preload("res://Gem/gem.tscn")
 const explosion_scene = preload("res://Explosion/explosion.tscn")

@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://prd70qtp04pg"]
+
+[ext_resource type="Script" path="res://Button/button.gd" id="1_c8g17"]
+[ext_resource type="Theme" uid="uid://dqpxgqn16w41e" path="res://Theme/base.tres" id="1_mgvva"]
+[ext_resource type="AudioStream" uid="uid://c58ftiwopyg08" path="res://Audio/GUI/hover.wav" id="2_g3xby"]
+[ext_resource type="AudioStream" uid="uid://bxs8j31ro3y73" path="res://Audio/GUI/click.wav" id="3_umtuh"]
+
+[node name="Button" type="Button"]
+theme = ExtResource("1_mgvva")
+text = "hello"
+script = ExtResource("1_c8g17")
+
+[node name="AudioHover" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_g3xby")
+
+[node name="AudioClick" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_umtuh")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

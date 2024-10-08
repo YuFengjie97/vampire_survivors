@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxysuqfw80br"]
+[gd_scene load_steps=7 format=3 uid="uid://bxysuqfw80br"]
 
 [ext_resource type="PackedScene" uid="uid://c8yotknuqyg6p" path="res://Enemy/enemy.tscn" id="1_ap4se"]
 [ext_resource type="Script" path="res://Enemy/enemy_giant_amoeba.gd" id="2_eh64j"]
@@ -19,12 +19,31 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_h2yge"]
+radius = 6.64384
+
 [node name="EnemyGiantAmoeba" instance=ExtResource("1_ap4se")]
+scale = Vector2(8, 8)
 script = ExtResource("2_eh64j")
+move_speed = 30000
+health = 99999
+knockback_recory = 9999
+experience = 0
+damage = 9999
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 sprite_frames = SubResource("SpriteFrames_h41ra")
 autoplay = ""
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(-0.25, 1.375)
+shape = SubResource("CircleShape2D_h2yge")
+
+[node name="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2(-0.375, 2.8125)
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2(0, 2.75)
 
 [editable path="HitBox"]
 [editable path="HurtBox"]

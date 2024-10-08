@@ -3,10 +3,11 @@ extends Node2D
 signal time_change
 
 @export var spawne_info_array: Array[SpawnInfo] = []
-var time = 0
+@export var time = 0
 
 @onready var timer: Timer = $Timer
 @onready var player: Player = get_tree().get_first_node_in_group('player') as Player
+@onready var audio_bgm: AudioStreamPlayer = %AudioBgm
 
 
 func _ready():

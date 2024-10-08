@@ -28,6 +28,11 @@ animations = [{
 
 [node name="EnemyCyclops" instance=ExtResource("1_1srfc")]
 script = ExtResource("2_h67b4")
+move_speed = 3500
+health = 40
+knockback_recory = 40
+experience = 50
+damage = 8
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 sprite_frames = SubResource("SpriteFrames_u638c")

@@ -28,6 +28,11 @@ animations = [{
 
 [node name="EnemyJuggernaut" instance=ExtResource("1_8uuwq")]
 script = ExtResource("2_h15xo")
+move_speed = 3000
+health = 20
+knockback_recory = 40
+experience = 30
+damage = 6
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 sprite_frames = SubResource("SpriteFrames_k8res")

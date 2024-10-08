@@ -28,6 +28,11 @@ animations = [{
 
 [node name="EnemyKoboldStrong" instance=ExtResource("1_u2r05")]
 script = ExtResource("2_7tknv")
+move_speed = 2600
+health = 20
+knockback_recory = 50
+experience = 20
+damage = 4
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 sprite_frames = SubResource("SpriteFrames_ohh8l")
